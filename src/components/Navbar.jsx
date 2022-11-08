@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import avatar from "../assets/icons/avatar.png";
+import { authContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  const currentUser = { displayName: "hasan" };
+  const { currentUser } = useContext(authContext);
+  // const currentUser = { displayName: "hasan" };
   return (
     <>
       <nav className="w-full flex flex-wrap items-center justify-between py-3 bg-gray-900 text-gray-200 shadow-lg navbar navbar-expand-lg fixed-top">
