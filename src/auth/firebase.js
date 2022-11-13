@@ -4,12 +4,17 @@ import {
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { toastErrorNotify, toastSuccessNotify } from "../helpers/toastNotify";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+  toastWarnNotify,
+} from "../helpers/toastNotify";
 
 //* Your web app's Firebase configuration
 // TODO: Replace the following with your app's Firebase project configuration
@@ -42,7 +47,6 @@ export const createUser = async (email, password, navigate, displayName) => {
       displayName: displayName,
     });
     navigate("/");
-    toastSuccessNotify("Signed in successfully");
     console.log(userCredential);
   } catch (error) {
     toastErrorNotify(error.message);
@@ -57,13 +61,14 @@ export const signIn = async (email, password, navigate) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     navigate("/");
+    toastSuccessNotify("Signed in successfully");
   } catch (error) {
-    alert(error.message);
+    // alert(error.message);
+    toastErrorNotify(error.message);
   }
 };
 
 export const userObserver = (setCurrentUser) => {
-  //? Kullanıcının signin olup olmadığını takip eden ve kullanıcı değiştiğinde yeni kullanıcıyı response olarak dönen firebase metodu
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const { email, displayName, photoURL } = user;
@@ -91,5 +96,19 @@ export const signUpWithGoogle = (navigate) => {
     })
     .catch((error) => {
       console.log(error);
+    });
+};
+
+export const forgotPassword = (email) => {
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      // Password reset email sent!
+      toastWarnNotify("Please check your mail box!");
+      // alert("Please check your mail box!");
+    })
+    .catch((err) => {
+      toastErrorNotify(err.message);
+      // alert(err.message);
+      // ..
     });
 };
