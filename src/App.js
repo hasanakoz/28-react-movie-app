@@ -1,13 +1,14 @@
 import React from "react";
-import AuthContext from "./context/AuthContext";
+import AuthContextProvider from "./context/AuthContextProvider";
+import AuthContext from "./context/AuthContextProvider";
 import AppRouter from "./router/AppRouter";
 
 const App = () => {
   return (
-    <div>
-      <AuthContext>
+    <div className="bg-[#23242a]">
+      <AuthContextProvider>
         <AppRouter />
-      </AuthContext>
+      </AuthContextProvider>
     </div>
   );
 };
