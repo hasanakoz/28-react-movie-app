@@ -14,6 +14,7 @@ const Main = () => {
   const [loading, setLoading] = useState(false);
 
   const getMovies = (API) => {
+    setLoading(true);
     axios
       .get(API)
       .then((res) => {
@@ -21,7 +22,8 @@ const Main = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -48,16 +50,23 @@ const Main = () => {
           className="w-80 h-8 rounded-md outline-none border p-1 m-2"
           placeholder="Search a movie..."
           onChange={(e) => setSearchTerm(e.target.value)}
-          value={searchTerm}
+          // value={searchTerm}
         />
         <button className="text-white" type="submit">
           Search
         </button>
       </form>
       <div className="flex justify-center flex-wrap">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} {...movie} />
-        ))}
+        {loading ? (
+          <div
+            className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          movies.map((movie) => <MovieCard key={movie.id} {...movie} />)
+        )}
       </div>
     </>
   );
