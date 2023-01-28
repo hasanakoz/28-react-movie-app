@@ -13,6 +13,10 @@ const Main = () => {
   const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    getMovies(FEATURED_API);
+  }, []);
+
   const getMovies = (API) => {
     setLoading(true);
     axios
@@ -25,10 +29,6 @@ const Main = () => {
       })
       .finally(() => setLoading(false));
   };
-
-  useEffect(() => {
-    getMovies(FEATURED_API);
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ const Main = () => {
           className="w-80 h-8 rounded-md outline-none border p-1 m-2"
           placeholder="Search a movie..."
           onChange={(e) => setSearchTerm(e.target.value)}
-          // value={searchTerm}
+          value={searchTerm}
         />
         <button className="text-white" type="submit">
           Search
